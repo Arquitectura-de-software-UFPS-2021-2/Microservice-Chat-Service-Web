@@ -19,6 +19,7 @@ export default function Messenger() {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [users, setUsers] = useState([]);
   const [visibleUsers, setVisibleUsers] = useState([]);
+  const [visibleConversations, setVisibleConversations] = useState([]);
   const [file, setFile] = useState(null);
   const socket = useRef();
   const { user } = useContext(AuthContext);
@@ -72,9 +73,13 @@ export default function Messenger() {
         console.log(err);
       }
     };
-    loadConversations && getConversations();
-    setLoadConversations(false);
-  }, [user._id, loadConversations]);
+    if (loadConversations) {
+      getConversations();
+      setLoadConversations(false)
+    } else {
+      setVisibleConversations(conversations);
+    }
+  }, [user._id, conversations, loadConversations]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -90,12 +95,15 @@ export default function Messenger() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const message = {
       sender: user._id,
       text: newMessage,
       conversationId: currentChat._id,
     };
-
+    if (newMessage === "" && !file) {
+      return
+    }
     if (file) {
       const data = new FormData();
       const fileName = Date.now() + file.name;
@@ -113,6 +121,7 @@ export default function Messenger() {
           receiverId,
           text: fileName,
         });
+        setFile(null)
       } catch (err) { }
     } else {
       const receiverId = currentChat.members.find(
@@ -149,6 +158,17 @@ export default function Messenger() {
       user.email.toLowerCase().includes(search) || user.name.toLowerCase().includes(search) || user.last_name.toLowerCase().includes(search)))
   }
 
+  const handlerSearchConversations = (e) => {
+    const search = e.target.value.toLowerCase();
+    if (!search || search.length < 2) {
+      console.log(conversations)
+      setVisibleConversations(conversations);
+      return;
+    }
+    setVisibleConversations(conversations.filter((conversation) =>
+      conversation.userName.toLowerCase().includes(search)))
+  }
+
   return (
     <>
       <main className="messenger py-12 mx-auto w-5/6 bg-gray-100 flex">
@@ -156,11 +176,11 @@ export default function Messenger() {
         <aside className="chatMenu w-3/12 mr-4">
           <div className="rounded-md p-2 flex items-center bg-red-700 mb-4">
             <p className="mr-4 text-white">Buscar:</p>
-            <input placeholder="Search for friends" className="rounded-md resize-none h-8 py-1 px-3 w-full" />
+            <input onChange={handlerSearchConversations} placeholder="Search for friends" className="rounded-md resize-none h-8 py-1 px-3 w-full" />
           </div>
           <h4 className="bg-white pt-2 text-center font-bold mt-4">Chats</h4>
           <div className="bg-white p-4">
-            {conversations.map((c) => (
+            {visibleConversations.map((c) => (
               <div onClick={() => setCurrentChat(c)}>
                 <Conversation conversation={c} currentUser={user} />
               </div>
@@ -213,18 +233,18 @@ export default function Messenger() {
               </span>
             )}
           </article>
-        
+
           <article className="chatOnline w-3/12 mr-4">
             <div className="chatOnlineWrapper rounded-md p-2 flex items-center bg-red-700 mb-4">
               <p className="mr-4 text-white">Agregar:</p>
               <input onChange={handlerSearch} placeholder="Buscar personas" className="chatMenuInput rounded-md resize-none h-8 py-1 px-3 w-full" />
             </div>
-              <ChatOnline
-                onlineUsers={visibleUsers}
-                currentId={user._id}
-                setCurrentChat={setCurrentChat}
-                setLoadConversations={setLoadConversations}
-              />
+            <ChatOnline
+              onlineUsers={visibleUsers}
+              currentId={user._id}
+              setCurrentChat={setCurrentChat}
+              setLoadConversations={setLoadConversations}
+            />
           </article>
 
         </section>

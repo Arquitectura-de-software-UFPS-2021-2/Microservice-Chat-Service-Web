@@ -12,6 +12,7 @@ export default function Conversation({ conversation, currentUser }) {
     const getUser = async () => {
       try {
         const res = await axios("/users?userId=" + friendId);
+        conversation.userName = res.data.username
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -22,12 +23,12 @@ export default function Conversation({ conversation, currentUser }) {
 
   return (
     <>
-    <ul className="rounded-md">
-      <li className="cursor-pointer bg-red-100 hover:bg-red-300 p-2 rounded-md mb-2 flex items-center">
-        <img className="conversationImg" src={ user?.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"}/>
-        <span>{user?.username}</span>
-      </li>
-    </ul>
+      <ul className="rounded-md">
+        <li className="cursor-pointer bg-red-100 hover:bg-red-300 p-2 rounded-md mb-2 flex items-center">
+          <img className="conversationImg" src={user?.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"} />
+          <span>{user?.username}</span>
+        </li>
+      </ul>
     </>
   );
 }
