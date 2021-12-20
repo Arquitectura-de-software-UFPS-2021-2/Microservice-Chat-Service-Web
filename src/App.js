@@ -15,6 +15,9 @@ function App() {
   return (
     <Router>
       <Switch>
+        <Route exact path="/">
+          <Messenger />
+        </Route>
         <Route path="/login">{user ? <Redirect to="/messenger" /> : <Login />}</Route>
         <Route path="/messenger">
           {!user ? <Redirect to="/" /> : <Messenger />}
