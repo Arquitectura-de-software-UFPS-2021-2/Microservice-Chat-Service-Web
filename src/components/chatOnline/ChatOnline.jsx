@@ -4,7 +4,6 @@ import "./chatOnline.css";
 
 export default function ChatOnline({ onlineUsers, currentId, setCurrentChat, setLoadConversations }) {
   const [friends, setFriends] = useState([]);
-  const [onlineFriends, setOnlineFriends] = useState([]);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   useEffect(() => {
@@ -15,27 +14,23 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat, set
     getFriends();
   }, [onlineUsers]);
 
-  useEffect(() => {
-    setOnlineFriends(friends.filter((f) => onlineUsers.includes(f.codigo)));
-  }, [friends, onlineUsers]);
-
   const handleClick = async (user) => {
     try {
-      const res = await axios("/users?email=" + user.email);
+      const res = await axios("http://34.202.12.23/users?email=" + user.email);
       if (Object.keys(res.data).length === 0) {
-        const res2 = await axios.post("/auth/register", {
+        const res2 = await axios.post("http://34.202.12.23/auth/register", {
           username: user.name + "_" + user.last_name,
           email: user.email,
           password: "123456"
         });
         if (res2.data) {
           const resFind = await axios.get(
-            `/conversations/find/${currentId}/${res2.data._id}`
+            `http://34.202.12.23/conversations/find/${currentId}/${res2.data._id}`
           );
           if (resFind.data) {
             setCurrentChat(resFind.data);
           } else {
-            await axios.post(`/conversations`, {
+            await axios.post(`http://34.202.12.23/conversations`, {
               "senderId": currentId,
               "receiverId": res2.data._id + ""
             });
@@ -46,12 +41,12 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat, set
         }
       } else {
         const resFind = await axios.get(
-          `/conversations/find/${currentId}/${res.data._id}`
+          `http://34.202.12.23/conversations/find/${currentId}/${res.data._id}`
         );
         if (resFind.data) {
           setCurrentChat(resFind.data);
         } else {
-          await axios.post(`/conversations`, {
+          await axios.post(`http://34.202.12.23/conversations`, {
             "senderId": currentId,
             "receiverId": res.data._id + ""
           });

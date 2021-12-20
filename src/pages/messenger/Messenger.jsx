@@ -26,7 +26,7 @@ export default function Messenger() {
   const scrollRef = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://44.201.137.13:8900");
+    socket.current = io("ws://34.202.12.23:8900");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -50,7 +50,7 @@ export default function Messenger() {
     const getUsers = async () => {
       try {
         const res = await axios.post("http://18.235.152.56/students", {
-          "api_token": "5TDk48EiKiKMTaUyRAWNTz35Dilk4XS2LYrDDJmG36AoQq8TzFhjfGZCpw0L1wF0mlxp0BXfwbcjbKxXhAaBHDv9bhH6l4qudsCJ6zT4wcHv9pBHEVS1X2tEgXF5GulcCrA9Hic8jCZcECVpfl4yvK"
+          "api_token": "vLKZjD9OxwR05GPNaH4Csd2zKD20t0s91wA2G95whxz3imMl0CTshNaGgzBLHGOguY9iNVogtPMxkDHGn61DJXmBbGIU4Me0kJsmk3A2HTZPtAy1a9Jxd5RBSrBkb1cedCwzxmUU4b8Ph1Glo8GKTX"
         });
         setUsers(res.data.data);
       } catch (err) {
@@ -67,7 +67,7 @@ export default function Messenger() {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get("/conversations/" + user._id);
+        const res = await axios.get("http://34.202.12.23/conversations/" + user._id);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
@@ -84,7 +84,7 @@ export default function Messenger() {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get("/messages/" + currentChat?._id);
+        const res = await axios.get("http://34.202.12.23/messages/" + currentChat?._id);
         setMessages(res.data);
       } catch (err) {
         console.log(err);
