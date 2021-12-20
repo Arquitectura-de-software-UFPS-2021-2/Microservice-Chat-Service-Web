@@ -70,7 +70,7 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat, set
                   ? PF + o.profilePicture
                   : PF + "person/noAvatar.png"
               }
-              alt=""
+              alt="profile"
             />
             <div className="chatOnlineBadge"></div>
           </div>

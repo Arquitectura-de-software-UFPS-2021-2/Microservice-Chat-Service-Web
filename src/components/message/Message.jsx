@@ -21,7 +21,7 @@ export default function Message({ message, own }) {
       <div className="messageTop">
         {
           haveImage ?
-            <img className="postImg w-52" src={PF + message.text} alt="" />
+            <img className="postImg w-52" src={PF + message.text} alt="message" />
             : <p className="messageText w-3/6 mb-2 p-2 rounded-md bg-red-300">{message.text}</p>
         }
 

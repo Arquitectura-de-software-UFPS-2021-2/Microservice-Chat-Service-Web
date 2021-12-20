@@ -207,7 +207,7 @@ export default function Messenger() {
                   ></textarea>
                   {file && (
                     <div className="shareImgContainer ml-2">
-                      <img className="shareImg w-60" src={URL.createObjectURL(file)} alt="" />
+                      <img className="shareImg w-60" src={URL.createObjectURL(file)} alt="upload" />
                       <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
                     </div>
                   )}

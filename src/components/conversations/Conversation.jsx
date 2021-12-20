@@ -25,7 +25,7 @@ export default function Conversation({ conversation, currentUser }) {
     <>
       <ul className="rounded-md">
         <li className="cursor-pointer bg-red-100 hover:bg-red-300 p-2 rounded-md mb-2 flex items-center">
-          <img className="conversationImg" src={user?.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"} />
+          <img className="conversationImg" src={user?.profilePicture ? PF + user.profilePicture : PF + "person/noAvatar.png"} alt="user" />
           <span>{user?.username}</span>
         </li>
       </ul>
