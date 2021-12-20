@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Host https://heuristic-austin-61fecc.netlify.app/
 
 ## Available Scripts
 
